@@ -1,4 +1,4 @@
-package me.aaron.top250.activities;
+package me.aaron.top250.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

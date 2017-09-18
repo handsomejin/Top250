@@ -1,4 +1,4 @@
-package me.aaron.top250.bean;
+package me.aaron.top250.model.bean;
 
 import java.util.List;
 
