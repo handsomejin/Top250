@@ -6,7 +6,7 @@ import java.util.List;
  * Created by aaron on 17-9-17.
  */
 
-public class SubjectBean {
+public class InfoBean {
 
 
     /**

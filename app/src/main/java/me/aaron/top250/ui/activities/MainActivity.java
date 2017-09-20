@@ -1,7 +1,6 @@
 package me.aaron.top250.ui.activities;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,15 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-
-import java.util.List;
+import android.widget.Toast;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import me.aaron.top250.R;
 import me.aaron.top250.adapters.MainRecyAdapters;
 import me.aaron.top250.contract.MainContract;
-import me.aaron.top250.model.bean.ItemBean;
+import me.aaron.top250.model.bean.ItemsBean;
 import me.aaron.top250.presenter.MainPresenter;
 
 public class MainActivity extends AppCompatActivity implements MainContract.IMainView{
@@ -30,9 +28,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
     private SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton buttonToTop;
 
-    private MainPresenter mainPresenter = new MainPresenter(this);
+    private MainPresenter mainPresenter;
     private MainRecyAdapters mainAdapter;
-    private boolean isLoading;
+
+    public static boolean isRefresh() {
+        return isRefresh;
+    }
+
+    public static void setIsRefresh(boolean isRefresh) {
+        MainActivity.isRefresh = isRefresh;
+    }
+
+    private static boolean isRefresh;
+
 
 
     @Override
@@ -40,8 +48,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        isRefresh = true;
+        mainPresenter = new MainPresenter(this);
         mainPresenter.start();
-
     }
 
     private void initView(){
@@ -56,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                isRefresh = true;
                 mainPresenter.startRefresh();
             }
         });
@@ -75,20 +85,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
                 case R.id.btn_back_to_top:
                     recyclerMain.smoothScrollToPosition(0);
             }
-
         }
     };
 
     RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            Log.d("66666666666", "onScrolled: ");
             super.onScrolled(recyclerView, dx, dy);
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
             int endPosition = recyclerView.getAdapter().getItemCount();
-            Log.d("77777777777", "onScrolled: "+endPosition+"-----"+ linearLayoutManager.findLastCompletelyVisibleItemPosition());
             if (endPosition == linearLayoutManager.findLastCompletelyVisibleItemPosition()+1){
-                mainPresenter.askMoreItems(recyclerView.getAdapter().getItemCount()-1);
+                if (endPosition <=250){
+                    mainPresenter.askMoreItems(recyclerView.getAdapter().getItemCount()-1);
+                }else {
+                    mainAdapter.notifyItemRemoved(recyclerMain.getAdapter().getItemCount());
+                    Toast.makeText(MainActivity.this,"已经到底啦",Toast.LENGTH_SHORT).show();
+                }
             }
         }
     };
@@ -96,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
 
 
     @Override
-    public void showItems(List<ItemBean> items) {
-        mainAdapter = new MainRecyAdapters(this,items);
+    public void showItems(ItemsBean itemsBean) {
+        mainAdapter = new MainRecyAdapters(this,itemsBean);
         recyclerMain.setAdapter(mainAdapter);
     }
 
@@ -107,11 +119,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
     }
 
     @Override
-    public void showMore() {
-        mainAdapter.loadMore();
-
+    public void showMore(ItemsBean items) {
+        mainAdapter.notifyItemRemoved(recyclerMain.getAdapter().getItemCount()-1);
+        mainAdapter.initData(items);
+        mainAdapter.notifyDataSetChanged();
     }
-
 
     @Override
     public void setPresenter(MainContract.IMainPresenter presenter) {

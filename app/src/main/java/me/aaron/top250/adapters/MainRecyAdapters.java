@@ -1,6 +1,7 @@
 package me.aaron.top250.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.aaron.top250.R;
-import me.aaron.top250.model.bean.ItemBean;
+import me.aaron.top250.model.bean.ItemsBean;
+import me.aaron.top250.ui.activities.InfoActivity;
 
 /**
  * Created by aaron on 17-9-18.
@@ -26,19 +28,18 @@ public class MainRecyAdapters extends RecyclerView.Adapter<MainVH>{
     private final int TYPE_FOOTER = 1;
 
 
-
     private Context context;
-    private List<ItemBean> itemBeanList;
+    //private List<ItemBean> itemBeanList;
+    private ItemsBean itemsBean;
+    private List<ItemsBean.ItemBean> itemBeanList = new ArrayList<>();
 
 
-    public MainRecyAdapters(Context context , List<ItemBean> itemBeanList){
+    public MainRecyAdapters(Context context , ItemsBean itemsBean){
         this.context = context;
-        this.itemBeanList = itemBeanList;
+        this.itemsBean = itemsBean;
+        initData(itemsBean);
     }
 
-    public void loadMore(List<ItemBean> itemBeanList1){
-        itemBeanList.addAll(itemBeanList1);
-    }
 
     @Override
     public MainVH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -70,7 +71,9 @@ public class MainRecyAdapters extends RecyclerView.Adapter<MainVH>{
                 holder.itemview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //在这里处理点击事件
+                        Intent intent = new Intent(context, InfoActivity.class);
+                        intent.putExtra("id",itemBeanList.get(position).getId());
+                        context.startActivity(intent);
                     }
                 });
                 break;
@@ -94,4 +97,13 @@ public class MainRecyAdapters extends RecyclerView.Adapter<MainVH>{
             return TYPE_NORMAL;
         }
     }
+
+    public void initData(ItemsBean itemsBean){
+        for (int i = 0 ; i < 25 ; i++){
+            ItemsBean.ItemBean item;
+            item = itemsBean.getSubjects().get(i);
+            itemBeanList.add(item);
+        }
+    }
+
 }

@@ -12,7 +12,7 @@
     <style name="InfoTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorBrown</item>
         <item name="colorPrimaryDark">@color/colorBrown</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorBrown</item>
         <item name="android:textColorPrimary">@color/colorTextWhite</item>
     </style>
 

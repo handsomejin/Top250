@@ -11,7 +11,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ui.activities.MainActivity"
+        <activity
+            android:name=".ui.activities.MainActivity"
             android:theme="@style/MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,8 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.InfoActivity"
-            android:theme="@style/InfoTheme"></activity>
+        <activity
+            android:name=".ui.activities.InfoActivity"
+            android:theme="@style/InfoTheme"
+            android:label=""/>
     </application>
 
 </manifest>

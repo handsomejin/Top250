@@ -1,9 +1,7 @@
 package me.aaron.top250.presenter;
 
-import java.util.List;
-
-import me.aaron.top250.model.ItemModel;
-import me.aaron.top250.model.bean.ItemBean;
+import me.aaron.top250.model.ItmesModel;
+import me.aaron.top250.model.bean.ItemsBean;
 import me.aaron.top250.contract.MainContract;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -15,25 +13,30 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MainPresenter implements MainContract.IMainPresenter {
 
     private MainContract.IMainView iMainView;
-    private ItemModel itemModel;
+    private ItmesModel itemModel;
 
 
     public MainPresenter(MainContract.IMainView iMainView){
         this.iMainView = checkNotNull(iMainView);
-        itemModel = new ItemModel(this);
+        itemModel = new ItmesModel(this);
         iMainView.setPresenter(this);
 
     }
 
     @Override
-    public void askMoreItems(int startNum) {
-        itemModel.getItems(startNum);
+    public void askMoreItems(int startNumber) {
+        itemModel.getItems(startNumber);
     }
 
     @Override
-    public void returnItems(List<ItemBean> items) {
+    public void returnStartItems(ItemsBean items) {
         iMainView.showItems(items);
         iMainView.stopRefresh();
+    }
+
+    @Override
+    public void returnMoreItems(ItemsBean items) {
+        iMainView.showMore(items);
     }
 
     @Override
