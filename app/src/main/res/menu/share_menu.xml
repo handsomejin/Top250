@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/share"
-        android:icon="@mipmap/ic_share"
+        android:icon="@drawable/pic_share_48"
         android:title="share"
         app:showAsAction="always"/>
 

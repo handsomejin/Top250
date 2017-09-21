@@ -29,7 +29,6 @@ public class MainRecyAdapters extends RecyclerView.Adapter<MainVH>{
 
 
     private Context context;
-    //private List<ItemBean> itemBeanList;
     private ItemsBean itemsBean;
     private List<ItemsBean.ItemBean> itemBeanList = new ArrayList<>();
 

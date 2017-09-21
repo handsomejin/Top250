@@ -322,6 +322,9 @@ public class InfoBean {
         }
     }
 
+
+
+
     public static class DirectorsBean {
         /**
          * alt : https://movie.douban.com/celebrity/1047973/

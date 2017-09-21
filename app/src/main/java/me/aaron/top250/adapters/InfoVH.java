@@ -20,13 +20,20 @@ public class InfoVH extends RecyclerView.ViewHolder {
 
     TextView tvInfo;
 
+    RecyclerView recyclerView;
+
     public InfoVH(View itemView,int viewType) {
         super(itemView);
-        tvCollect = (TextView) itemView.findViewById(R.id.tv_collect_num);
-        tvGenar = (TextView) itemView.findViewById(R.id.tv_genar);
-        tvYear = (TextView) itemView.findViewById(R.id.tv_year);
-        tvRating = (TextView) itemView.findViewById(R.id.tv_info_rating);
-        tvTitle = (TextView) itemView.findViewById(R.id.tv_info_movie_name);
-        tvInfo = (TextView) itemView.findViewById(R.id.tv_info_movie_info);
+        if (viewType == 0){
+            tvCollect = (TextView) itemView.findViewById(R.id.tv_collect_num);
+            tvGenar = (TextView) itemView.findViewById(R.id.tv_genar);
+            tvYear = (TextView) itemView.findViewById(R.id.tv_year);
+            tvRating = (TextView) itemView.findViewById(R.id.tv_info_rating);
+            tvTitle = (TextView) itemView.findViewById(R.id.tv_info_movie_name);
+        }else if (viewType == 1){
+            tvInfo = (TextView) itemView.findViewById(R.id.tv_info_movie_info);
+        }else {
+            recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler_people);
+        }
     }
 }

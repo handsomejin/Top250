@@ -16,4 +16,11 @@
         <item name="android:textColorPrimary">@color/colorTextWhite</item>
     </style>
 
+    <style name="ActorTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorGrey</item>
+        <item name="colorPrimaryDark">@color/colorGrey</item>
+        <item name="colorAccent">@color/colorGrey</item>
+        <item name="android:textColorPrimary">@color/colorTextWhite</item>
+    </style>
+
 </resources>

@@ -1,6 +1,7 @@
 package me.aaron.top250.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,7 +43,8 @@ public class InfoRecyAdapters extends RecyclerView.Adapter<InfoVH> {
             view = LayoutInflater.from(context).inflate(R.layout.cv_info_second_item,parent,false);
             return new InfoVH(view,TYPE_SECOND);
         }else {
-            return null;
+            view = LayoutInflater.from(context).inflate(R.layout.cv_info_third_item,parent,false);
+            return new InfoVH(view,TYPE_THIRD);
         }
     }
 
@@ -52,12 +54,18 @@ public class InfoRecyAdapters extends RecyclerView.Adapter<InfoVH> {
             case TYPE_FIRST:
                 holder.tvTitle.setText(infoBean.getTitle());
                 holder.tvRating.setText(String.valueOf(infoBean.getRating().getAverage()));
-                holder.tvCollect.setText(String.valueOf(infoBean.getCollect_count()));
+                holder.tvCollect.setText(String.valueOf(infoBean.getCollect_count())+ "人");
                 holder.tvGenar.setText("类型: " + TextUtils.join(",",infoBean.getGenres()));
                 holder.tvYear.setText("上映时间: " + infoBean.getYear());
                 break;
             case TYPE_SECOND:
                 holder.tvInfo.setText(infoBean.getSummary());
+                break;
+            case TYPE_THIRD:
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                holder.recyclerView.setLayoutManager(linearLayoutManager);
+                holder.recyclerView.setAdapter(new PeopleRecyAdapters(context,infoBean.getCasts(),infoBean.getDirectors()));
                 break;
             default:
                 break;
@@ -68,7 +76,7 @@ public class InfoRecyAdapters extends RecyclerView.Adapter<InfoVH> {
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 3;
     }
 
     @Override

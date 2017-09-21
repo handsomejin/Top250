@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -101,7 +100,7 @@ public class InfoActivity extends AppCompatActivity implements InfoContarct.IInf
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.share_manu,menu);
+        getMenuInflater().inflate(R.menu.share_menu,menu);
         return true;
     }
 
@@ -121,6 +120,7 @@ public class InfoActivity extends AppCompatActivity implements InfoContarct.IInf
 
     @Override
     public void showTopPic(String imageString) {
+        recyclerInfo.setFocusable(false);
         Glide.with(this).load(imageString).into(ivMoviePic);
     }
 
