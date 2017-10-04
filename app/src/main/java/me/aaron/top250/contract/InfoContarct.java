@@ -12,16 +12,17 @@ public interface InfoContarct {
 
     interface IInfoView extends BaseView<IInfoPresenter>{
         void showTopPic(String imageString);//顶部图片展示
-        void showItems(InfoBean infoBean);//展示列表
+        void showItems();//展示列表
     }
 
     interface IInfoPresenter extends BasePresenter{
         void askSubject(String id);
-        void returnSubject(InfoBean infoBean);
+        InfoBean returnSubject();
+        void callShow();
     }
 
     interface IInfoModel{
         void getSubject(String id);
-        void setSubject();
+        InfoBean setSubject();
     }
 }

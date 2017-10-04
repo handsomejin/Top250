@@ -23,11 +23,13 @@ public class MainPresenter implements MainContract.IMainPresenter {
 
     }
 
+    //请求更多
     @Override
     public void askMoreItems(int startNumber) {
         itemModel.getItems(startNumber);
     }
 
+    //将最开始请求到的数据返回给view层
     @Override
     public void returnStartItems(ItemsBean items) {
         iMainView.showItems(items);
@@ -44,6 +46,7 @@ public class MainPresenter implements MainContract.IMainPresenter {
         itemModel.startRefresh();
     }
 
+    //第一次请求数据
     @Override
     public void start() {
         itemModel.getItems(0);

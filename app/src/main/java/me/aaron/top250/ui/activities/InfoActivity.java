@@ -125,7 +125,8 @@ public class InfoActivity extends AppCompatActivity implements InfoContarct.IInf
     }
 
     @Override
-    public void showItems(InfoBean infoBean) {
+    public void showItems() {
+        InfoBean infoBean = infoPresenter.returnSubject();
         shareUrl = infoBean.getShare_url();
         mobileUrl = infoBean.getMobile_url();
         tbTitle = infoBean.getTitle();

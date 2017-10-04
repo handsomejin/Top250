@@ -20,40 +20,48 @@ import okhttp3.Response;
 
 public class ItmesModel implements MainContract.IMainModel {
 
+    //请求数据的前缀和后缀
     private final String requestUrlPre = "http://api.douban.com/v2/movie/top250?start=";
     private final String requestUtlSuf = "&count=25";
+    //Presenter层的接口引用
     private MainContract.IMainPresenter imainPresenter;
+    //这个值用来记录已经加载了多少个item，在加载更多的时候会用到
     private static int positionNum = 0;
 
+    //数据模型
     private ItemsBean items;
 
     public ItmesModel(MainContract.IMainPresenter iMainPresenter){
         this.imainPresenter = iMainPresenter;
     }
 
-
+    //刷新数据就直接相当于重新第一次请求数据
     @Override
     public void startRefresh() {
         getItems(0);
     }
 
+    //加载数据在这个方法里面构造异步加载类的对象
     @Override
     public void getItems(int startNumber) {
         new requestItems().execute(startNumber);
     }
 
-
+    //在Presenter层中会调用该方法，得到请求的最开使得25个item数据
     @Override
     public void setStartItems() {
         imainPresenter.returnStartItems(items);
     }
 
+    //同上，只是请求的是更多的item数据
     @Override
     public void setMoreItems(){
         imainPresenter.returnMoreItems(items);
     }
 
 
+
+    //异步类处理网络请求
     class requestItems extends AsyncTask<Integer,Void,String>{
 
         @Override
@@ -72,7 +80,7 @@ public class ItmesModel implements MainContract.IMainModel {
         protected void onPostExecute(String s) {
             if (s != null){
                 items = new Gson().fromJson(s,new TypeToken<ItemsBean>(){}.getType());
-                if (MainActivity.isRefresh()){
+                if (MainActivity.isStart()){
                     setStartItems();
                     MainActivity.setIsRefresh(false);
                 }else {

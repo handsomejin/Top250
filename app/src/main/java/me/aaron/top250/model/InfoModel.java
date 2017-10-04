@@ -42,8 +42,8 @@ public class InfoModel implements InfoContarct.IInfoModel {
     }
 
     @Override
-    public void setSubject() {
-        iInfoPresenter.returnSubject(infoBean);
+    public InfoBean setSubject() {
+        return infoBean;
     }
 
     class requestSubject extends AsyncTask<String , Void ,String>{
@@ -65,7 +65,7 @@ public class InfoModel implements InfoContarct.IInfoModel {
         protected void onPostExecute(String s) {
             if (s != null){
                 infoBean = new Gson().fromJson(s,new TypeToken<InfoBean>(){}.getType());
-                setSubject();
+                iInfoPresenter.callShow();
             }else {
                 new requestSubject().execute(id);
             }

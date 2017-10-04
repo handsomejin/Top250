@@ -33,7 +33,13 @@ public class InfoPresenter implements InfoContarct.IInfoPresenter {
     }
 
     @Override
-    public void returnSubject(InfoBean infoBean) {
-        infoView.showItems(infoBean);
+    public InfoBean returnSubject() {
+        return infoModel.setSubject();
     }
+
+    @Override
+    public void callShow() {
+        infoView.showItems();
+    }
+
 }

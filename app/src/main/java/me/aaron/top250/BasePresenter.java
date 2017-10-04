@@ -5,5 +5,6 @@ package me.aaron.top250;
  */
 
 public interface BasePresenter{
+    //activity的启动的时候要做的第一个加载方法
     void start();
 }
