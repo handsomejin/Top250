@@ -11,23 +11,25 @@ import me.aaron.top250.model.bean.ItemsBean;
 
 public interface MainContract {
     interface IMainView extends BaseView<IMainPresenter>{
-        void showItems(ItemsBean itemsBean);
+        void showItems();
         void stopRefresh();
-        void showMore(ItemsBean items);
+        void showMore();
     }
 
     interface IMainPresenter extends BasePresenter{
         void askMoreItems(int startNum);
-        void returnMoreItems(ItemsBean items);
-        void returnStartItems(ItemsBean items);
+        ItemsBean returnMoreItems();
+        ItemsBean returnStartItems();
         void startRefresh();
+        void callShowStart();
+        void callShowMore();
     }
 
     interface IMainModel{
         void startRefresh();
         void getItems(int startNum);
-        void setStartItems();
-        void setMoreItems();
+        ItemsBean setStartItems();
+        ItemsBean setMoreItems();
     }
 
 }

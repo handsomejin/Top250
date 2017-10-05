@@ -1,6 +1,7 @@
 package me.aaron.top250.model;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,6 +39,7 @@ public class ItmesModel implements MainContract.IMainModel {
     //刷新数据就直接相当于重新第一次请求数据
     @Override
     public void startRefresh() {
+
         getItems(0);
     }
 
@@ -49,14 +51,14 @@ public class ItmesModel implements MainContract.IMainModel {
 
     //在Presenter层中会调用该方法，得到请求的最开使得25个item数据
     @Override
-    public void setStartItems() {
-        imainPresenter.returnStartItems(items);
+    public ItemsBean setStartItems() {
+        return items;
     }
 
     //同上，只是请求的是更多的item数据
     @Override
-    public void setMoreItems(){
-        imainPresenter.returnMoreItems(items);
+    public ItemsBean setMoreItems(){
+        return items;
     }
 
 
@@ -81,10 +83,10 @@ public class ItmesModel implements MainContract.IMainModel {
             if (s != null){
                 items = new Gson().fromJson(s,new TypeToken<ItemsBean>(){}.getType());
                 if (MainActivity.isStart()){
-                    setStartItems();
-                    MainActivity.setIsRefresh(false);
+                    imainPresenter.callShowStart();
+                    MainActivity.setIsStart(false);
                 }else {
-                    setMoreItems();
+                    imainPresenter.callShowMore();
                 }
             }else {
                 new requestItems().execute(positionNum);

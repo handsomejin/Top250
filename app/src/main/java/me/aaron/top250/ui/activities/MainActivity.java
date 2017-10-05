@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
     }
 
     //在model层那边调用  主要是为了分离第一次和加载更多
-    public static void setIsRefresh(boolean isRefresh) {
-        MainActivity.isStart = isRefresh;
+    public static void setIsStart(boolean isStart) {
+        MainActivity.isStart = isStart;
     }
 
     private static boolean isStart;
@@ -117,9 +117,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
 
 
     @Override
-    public void showItems(ItemsBean itemsBean) {
+    public void showItems() {
         //最开始的那些25个item就是通过这个方法展示出来的，刷新数据调用的也是这个方法
-        mainAdapter = new MainRecyAdapters(this,itemsBean);
+        stopRefresh();
+        mainAdapter = new MainRecyAdapters(this,mainPresenter.returnStartItems());
         recyclerMain.setAdapter(mainAdapter);
     }
 
@@ -130,11 +131,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.IMai
     }
 
     @Override
-    public void showMore(ItemsBean items) {
+    public void showMore() {
+        stopRefresh();
         //将底部自定义的加载更多的footview移除
         mainAdapter.notifyItemRemoved(recyclerMain.getAdapter().getItemCount()-1);
         //将加载更多得到的item给传递给Adapter的初始化数据的方法，在那个方法里面完成recyclerview的加载更多
-        mainAdapter.initData(items);
+        mainAdapter.initData(mainPresenter.returnMoreItems());
         //在Adapter那边加载更多数据完成之后，需要在这边调用方法来提示数据更新
         mainAdapter.notifyDataSetChanged();
     }

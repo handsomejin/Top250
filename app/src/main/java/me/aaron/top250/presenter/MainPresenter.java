@@ -31,19 +31,32 @@ public class MainPresenter implements MainContract.IMainPresenter {
 
     //将最开始请求到的数据返回给view层
     @Override
-    public void returnStartItems(ItemsBean items) {
-        iMainView.showItems(items);
-        iMainView.stopRefresh();
+    public ItemsBean returnStartItems() {
+        return itemModel.setStartItems();
+
     }
 
     @Override
-    public void returnMoreItems(ItemsBean items) {
-        iMainView.showMore(items);
+    public ItemsBean returnMoreItems() {
+        return itemModel.setMoreItems();
+
     }
 
     @Override
     public void startRefresh() {
         itemModel.startRefresh();
+    }
+
+    //在model层调用该方法
+    @Override
+    public void callShowStart() {
+        iMainView.showItems();
+    }
+
+    @Override
+    public void callShowMore() {
+        iMainView.showMore();
+
     }
 
     //第一次请求数据
