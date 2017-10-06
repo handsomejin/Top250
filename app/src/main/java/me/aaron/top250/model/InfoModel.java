@@ -1,18 +1,26 @@
 package me.aaron.top250.model;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.support.v4.content.AsyncTaskLoader;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 
+import me.aaron.top250.MyApplication;
 import me.aaron.top250.contract.InfoContarct;
 import me.aaron.top250.model.bean.InfoBean;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -37,7 +45,8 @@ public class InfoModel implements InfoContarct.IInfoModel {
     @Override
     public void getSubject(String id) {
         this.id = id;
-        new requestSubject().execute(id);
+        //new requestSubject().execute(id);
+        getInfoData(id);
 
     }
 
@@ -46,7 +55,7 @@ public class InfoModel implements InfoContarct.IInfoModel {
         return infoBean;
     }
 
-    class requestSubject extends AsyncTask<String , Void ,String>{
+    /*class requestSubject extends AsyncTask<String , Void ,String>{
 
         @Override
         protected String doInBackground(String... strings) {
@@ -70,8 +79,29 @@ public class InfoModel implements InfoContarct.IInfoModel {
                 new requestSubject().execute(id);
             }
         }
+    }*/
+
+    private void getInfoData(String id){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(subjectUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        InfoDataService infoDataService = retrofit.create(InfoDataService.class);
+        Call<InfoBean> response = infoDataService.getInfoData(id);
+        response.enqueue(new Callback<InfoBean>() {
+            @Override
+            public void onResponse(Call<InfoBean> call, retrofit2.Response<InfoBean> response) {
+                infoBean = response.body();
+                iInfoPresenter.callShow();
+            }
+            @Override
+            public void onFailure(Call<InfoBean> call, Throwable t) {
+                Toast.makeText(MyApplication.getContext(),"加载异常",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-
-
 }
+
+
+

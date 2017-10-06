@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import me.aaron.top250.R;
 import me.aaron.top250.adapters.InfoRecyAdapters;
@@ -121,7 +122,8 @@ public class InfoActivity extends AppCompatActivity implements InfoContarct.IInf
     @Override
     public void showTopPic(String imageString) {
         recyclerInfo.setFocusable(false);
-        Glide.with(this).load(imageString).into(ivMoviePic);
+        //Glide.with(this).load(imageString).into(ivMoviePic);
+        Picasso.with(this).load(imageString).into(ivMoviePic);
     }
 
     @Override
